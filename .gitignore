@@ -1,0 +1,48 @@
+# Dependencies
+node_modules/
+# CDK synth
+cdk.out/
+# Build output
+dist/
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment / secrets
+.env
+.env.local
+.env.*
+*.pem
+*.key
+*.p12
+*.crt
+
+# Local secret/test artifacts
+token-out.json
+token-*.json
+*.secret.json
+statement.pdf
+statement-*.pdf
+*.pdf
+statement-base64.txt
+*.base64.txt
+viewer-*.html
+
+# AWS and local tooling
+.aws-sam/
+.profile
+.credentials
+
+# Temp/backups
+tmp/
+secret-backup/
+
+# NPM
+npm-debug.log
+
+# Keep lockfile (do not ignore)
+# package-lock.json
+
+# Build artifacts from bundling
+*.zip
+*.gz

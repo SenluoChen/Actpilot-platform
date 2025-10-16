@@ -1,0 +1,125 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Statement PDF Viewer (Proxy + JWT demo)</title>
+  <style>
+    body { font-family: system-ui, Arial; margin: 16px; }
+    textarea { width: 100%; height: 240px; font-family: monospace; }
+    #pdfFrame { width: 100%; height: 700px; border: 1px solid #ccc; }
+    input[type=text] { width: 100%; }
+  </style>
+</head>
+<body>
+  <h2>Statement PDF Viewer (Proxy + short-lived JWT)</h2>
+  <div>
+    API Base URL:
+    <input id="base" type="text" value="https://r81kglf5wi.execute-api.eu-west-3.amazonaws.com/prod" />
+  </div>
+  <p>
+    <button id="callProxy">Call /proxy/statement (show PDF)</button>
+    <button id="downloadProxy">Download PDF (proxy)</button>
+  </p>
+
+  <label>Short-lived token (paste or auto-load from token-out.json for demo):</label>
+  <input id="tokenInput" type="text" placeholder="paste token here" />
+
+  <label>JSON payload (edit if needed):</label>
+  <textarea id="payload"></textarea>
+
+  <h3>PDF preview</h3>
+  <iframe id="pdfFrame"></iframe>
+
+<script>
+const callBtn = document.getElementById('callProxy');
+const dlProxyBtn = document.getElementById('downloadProxy');
+const baseEl = document.getElementById('base');
+const tokenInput = document.getElementById('tokenInput');
+const payloadEl = document.getElementById('payload');
+const iframe = document.getElementById('pdfFrame');
+
+// Try load local payload.json and token-out.json for convenience in dev
+(async function tryLoadLocalFiles(){
+  try {
+    const resp = await fetch('payload.json');
+    if (resp.ok) payloadEl.value = await resp.text();
+  } catch(e){}
+  try {
+    const r = await fetch('token-out.json');
+    if (r.ok) {
+      const t = await r.text();
+      try {
+        const parsed = JSON.parse(t);
+        const inner = JSON.parse(parsed.body || '{}');
+        if (inner.token) tokenInput.value = inner.token;
+      } catch(e){}
+    }
+  } catch(e){}
+})();
+
+async function callProxy(asDownload=false) {
+  const base = baseEl.value.replace(/\/$/,'');
+  const url = base + '/proxy/statement';
+  const token = tokenInput.value.trim();
+  const bodyText = payloadEl.value.trim() || '{}';
+
+  if (!token) return alert('Please paste a short-lived token into the token field');
+
+  try {
+    const resp = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'application/pdf'
+      },
+      body: bodyText
+    });
+
+    if (!resp.ok) {
+      const txt = await resp.text();
+      alert('HTTP ' + resp.status + '\n' + txt);
+      return;
+    }
+
+    // Handle potential binary PDF
+    const ct = resp.headers.get('content-type') || '';
+    if (ct.includes('application/pdf')) {
+      const blob = await resp.blob();
+      const blobUrl = URL.createObjectURL(blob);
+      if (asDownload) {
+        const a = document.createElement('a');
+        a.href = blobUrl; a.download = 'statement.pdf'; document.body.appendChild(a); a.click(); a.remove();
+      } else {
+        iframe.src = blobUrl;
+      }
+      return;
+    }
+
+    // Otherwise try parse JSON (could include base64 body)
+    const text = await resp.text();
+    try {
+      const parsed = JSON.parse(text);
+      if (parsed.isBase64Encoded && parsed.body) {
+        const bin = atob(parsed.body);
+        const len = bin.length; const bytes = new Uint8Array(len);
+        for (let i=0;i<len;i++) bytes[i]=bin.charCodeAt(i);
+        const blob = new Blob([bytes], {type: parsed.headers?.['Content-Type'] || 'application/pdf'});
+        const blobUrl = URL.createObjectURL(blob);
+        if (asDownload) { const a = document.createElement('a'); a.href = blobUrl; a.download='statement.pdf'; a.click(); }
+        else iframe.src = blobUrl;
+        return;
+      }
+      alert(JSON.stringify(parsed, null, 2));
+    } catch(e) {
+      alert(text);
+    }
+
+  } catch (err) { alert('Request failed: ' + String(err)); console.error(err); }
+}
+
+callBtn.addEventListener('click', ()=>callProxy(false));
+dlProxyBtn.addEventListener('click', ()=>callProxy(true));
+</script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+HTTP/1.1 403 Forbidden
+Content-Type: application/json
+Content-Length: 23
+Connection: keep-alive
+Date: Thu, 16 Oct 2025 08:43:19 GMT
+x-amz-apigw-id: SiB2NGCtCGYEV5A=
+x-amzn-RequestId: 5851f356-6bbe-4d6e-b408-ef5c2af60032
+x-amzn-ErrorType: ForbiddenException
+X-Cache: Error from cloudfront
+Via: 1.1 1c05bc5eb4aa7d18bd32daa38ba91892.cloudfront.net (CloudFront)
+X-Amz-Cf-Pop: CDG55-P2
+X-Amz-Cf-Id: 0xMIDIketMWdVT1g8CiOMmUvPWFCW6zxFH4aBvTGVXpNxLAD8OS-LQ==
+

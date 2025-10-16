@@ -1,0 +1,5 @@
+{
+  "company": "ABC Tech",
+  "email": "info@abc.com",
+  "useCase": "Recruitment"
+}

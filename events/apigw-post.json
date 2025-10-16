@@ -1,0 +1,13 @@
+{
+  "version": "2.0",
+  "routeKey": "POST /classify",
+  "rawPath": "/classify",
+  "requestContext": {
+    "requestId": "local-test"
+  },
+  "headers": {
+    "content-type": "application/json"
+  },
+  "body": "{\"company\": \"ABC Tech\", \"email\": \"info@abc.com\", \"useCase\": \"Recrutement\", \"dataSource\": \"CV + LinkedIn\", \"hasHumanSupervision\": true}",
+  "isBase64Encoded": false
+}

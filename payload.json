@@ -1,0 +1,19 @@
+{
+  "company": "ABC",
+  "email": "a@b.com",
+  "useCase": "Recruitment",
+  "classification": "Limited-risk",
+  "label": "LR-1",
+  "explication": "MVP test",
+  "checklist": ["X","Y"],
+  "dataSource": "internal",
+  "hasHumanSupervision": true,
+  "intendedPurpose": "Automate screening",
+  "providerName": "ABC Corp",
+  "systemName": "ScreenAI",
+  "version": "1.0",
+  "releaseForms": ["SaaS"],
+  "runtimeHW": "x86_64",
+  "swFwVersions": "Node 20",
+  "instructionsForUse": "Web app"
+}

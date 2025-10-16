@@ -1,0 +1,44 @@
+{
+  "name": "ai-act-mvp-backend-cdk-ts",
+  "version": "0.1.0",
+  "private": true,
+  "bin": {
+    "ai-act-mvp-backend-cdk-ts": "bin/app.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "cdk": "cdk",
+    "deploy": "npm run build && cdk deploy --require-approval never",
+    "deploy:auto": "npm run build && cdk deploy --require-approval never",
+    "destroy": "cdk destroy",
+    "local": "ts-node scripts/local-run.ts",
+    "run:statement-pdf": "ts-node scripts/run-statement-pdf.ts",
+    "test:local": "ts-node scripts/test-local.ts",
+    "dev:local": "nodemon --ext ts --exec \"npm run local\"",
+    "build:lambda": "node scripts/build-lambda.mjs",
+    "open:viewer": "powershell -NoProfile -Command Start-Process 'viewer.html'",
+    "smoke-test": "node scripts/smoke-test.js"
+  },
+  "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/pdfkit": "^0.17.3",
+    "aws-cdk-lib": "2.150.0",
+    "constructs": "10.3.0",
+    "esbuild": "^0.25.11",
+    "nodemon": "^3.0.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@aws-sdk/client-lambda": "^3.500.0",
+    "@aws-sdk/client-secrets-manager": "^3.500.0",
+    "fontkit": "^2.0.4",
+    "jsonwebtoken": "^9.0.0",
+    "pdf-lib": "^1.17.1",
+    "pdfkit": "^0.17.2",
+    "source-map-support": "^0.5.21",
+    "stream-buffers": "^3.0.2",
+    "zod": "^4.1.12"
+  }
+}

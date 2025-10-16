@@ -1,0 +1,9 @@
+{
+  "version": "2.0",
+  "routeKey": "POST /statement",
+  "rawPath": "/statement",
+  "requestContext": { "requestId": "local-pdf-test" },
+  "headers": { "content-type": "application/json", "accept": "application/pdf" },
+  "body": "{\"company\": \"ABC Tech\", \"email\": \"info@abc.com\", \"useCase\": \"Recrutement\", \"classification\": \"Haut risque\", \"label\": \"Rouge\", \"explication\": \"Domaine listé comme haut risque\", \"checklist\": [\"A\",\"B\",\"C\"]}",
+  "isBase64Encoded": false
+}
