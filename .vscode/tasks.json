@@ -1,0 +1,37 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "frontend: dev",
+      "type": "shell",
+      "command": "cd frontend; npm run dev -- --host localhost --port 5176 --strictPort",
+      "isBackground": true
+    },
+    {
+      "label": "frontend: build (task)",
+      "type": "shell",
+      "command": "cd frontend; npm run build",
+      "isBackground": false,
+      "group": "build"
+    },
+    {
+      "label": "build-backend",
+      "type": "shell",
+      "command": "npm run backend:build",
+      "isBackground": false,
+      "group": "build"
+    },
+    {
+      "label": "backend: deploy",
+      "type": "shell",
+      "command": "cd backend; npm run deploy",
+      "isBackground": false
+    },
+    {
+      "label": "backend: parser test",
+      "type": "shell",
+      "command": "cd backend; npx ts-node --files scripts/run-api-parser-openai-test.ts",
+      "isBackground": false
+    }
+  ]
+}

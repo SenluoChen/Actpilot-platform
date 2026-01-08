@@ -1,0 +1,215 @@
+.form-section {
+  /* Professional panel */
+  background: var(--surface);
+  border: 1px solid color-mix(in srgb, var(--border) 92%, transparent);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  padding: 20px 20px 36px 20px;
+  margin-bottom: 0;
+}
+
+.form-section:last-child {
+  border-bottom: none;
+}
+
+.form-section-title {
+  font-size: 1.10rem;
+  font-weight: 900;
+  letter-spacing: 0.01em;
+  color: var(--text);
+  padding-bottom: 14px; /* increased for larger divider spacing */
+  border-bottom: 1px solid color-mix(in srgb, var(--border) 92%, transparent);
+  margin-bottom: 16px;
+}
+
+.form-section-subtitle {
+  font-size: 0.96rem;
+  color: var(--text-subtle);
+  line-height: 1.45;
+  margin-bottom: 14px;
+  max-width: 66ch;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  opacity: 0.95;
+  padding-left: 12px;
+  border-left: 3px solid color-mix(in srgb, var(--primary) 10%, transparent);
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--primary) 2%, transparent);
+}
+
+.form-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.upload-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.select-control {
+  display: inline-flex;
+  align-items: center;
+}
+
+.file-count {
+  font-size: 0.95rem;
+  color: var(--text);
+  background: color-mix(in srgb, var(--primary) 8%, transparent);
+  padding: 4px 8px; /* slightly smaller so button gets more space */
+  border-radius: 999px;
+  font-weight: 700;
+  white-space: nowrap;
+  align-self: center;
+}
+
+.upload-panel {
+  display: flex;
+  flex-direction: column;
+  min-height: 160px;
+}
+
+.upload-footer {
+  margin-top: auto;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.form-field input[type="text"],
+.form-field textarea,
+.form-field select {
+  border: 1px solid var(--form-input-border);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  font-size: 1rem;
+  line-height: 1.5;
+  background: var(--form-input-bg);
+  transition: border 0.15s, box-shadow 0.15s;
+  color: var(--text);
+}
+
+.form-field input[type="text"]::placeholder,
+.form-field textarea::placeholder {
+  color: color-mix(in srgb, var(--text-subtle) 55%, transparent);
+  opacity: 1;
+}
+
+.form-field textarea {
+  resize: vertical;
+  min-height: 96px;
+}
+
+.form-field input[type="text"]:focus,
+.form-field textarea:focus,
+.form-field select:focus {
+  border: 1.5px solid var(--primary);
+  outline: none;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--primary) 18%, transparent);
+  background: var(--surface);
+}
+
+.form-field input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--primary);
+}
+
+.form-field-help {
+  font-size: 0.92rem;
+  color: var(--text-subtle);
+  line-height: 1.6;
+  margin-top: 2px;
+}
+
+.folder-upload-error {
+  margin-top: 10px;
+  color: #b91c1c;
+  font-weight: 600;
+}
+
+.btn {
+  padding: 10px 16px;
+  border: 1px solid color-mix(in srgb, var(--border) 92%, transparent);
+  border-radius: var(--radius-sm);
+  background: linear-gradient(180deg,#fff,#fbfdff);
+  color: var(--text);
+  font-weight: 700;
+  height: 42px;
+  cursor: pointer;
+  transition: transform 0.06s, box-shadow 0.12s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  line-height: 1;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: linear-gradient(180deg,var(--primary),var(--primary-hover));
+  border-color: color-mix(in srgb, var(--border) 92%, transparent);
+  color: #fff;
+  box-shadow: var(--shadow-sm);
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+}
+
+/* Container for the primary action so the button fills remaining space */
+.upload-action {
+  margin-left: 0;
+  flex: 2 1 auto; /* increase growth so button takes more horizontal space */
+  display: flex;
+}
+
+.upload-action .btn {
+  width: 100%;
+}
+
+.btn-primary:hover {
+  filter: brightness(1.02);
+}
+
+/* Wider buttons for the upload controls */
+.select-control .btn {
+  min-width: 140px;
+  padding-left: 18px;
+  padding-right: 18px;
+}
+
+.btn-primary {
+  min-width: 160px;
+}
+
+/* Small hint text under the upload controls */
+.upload-hint {
+  font-size: 0.86rem;
+  color: var(--text-subtle);
+  margin-top: 8px;
+}

@@ -1,0 +1,119 @@
+/* Minimal, modern form panel */
+.annexForm {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 0;
+}
+
+.formSection {
+  /* Floating card look */
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  padding: 18px 18px 16px 18px;
+  margin-bottom: 0;
+}
+
+.formSection:last-child {
+  border-bottom: none;
+}
+
+.formSectionTitle {
+  font-size: 1.10rem;
+  font-weight: 900;
+  letter-spacing: 0.01em;
+  color: var(--text);
+  padding-bottom: 10px;
+  border-bottom: 1px solid color-mix(in srgb, var(--border) 92%, transparent);
+  margin-bottom: 12px;
+}
+
+.formSectionSubtitle {
+  font-size: 0.97rem;
+  color: var(--text-subtle);
+  line-height: 1.6;
+  margin-bottom: 14px;
+  max-width: 70ch;
+}
+
+.formFields {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.formField {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.formFieldLabel {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  line-height: 1.25;
+  font-size: 1.01rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+
+.formFieldSuggested {
+  font-size: 0.78rem;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--surface-muted);
+  border: 1px solid var(--border);
+  color: var(--text-subtle);
+  font-weight: 600;
+}
+
+.formField input[type="text"],
+.formField textarea,
+.formField select {
+  border: 1px solid var(--form-input-border);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  font-size: 1rem;
+  line-height: 1.5;
+  background: var(--form-input-bg);
+  transition: border 0.15s, box-shadow 0.15s;
+  color: var(--text);
+}
+
+.formField input[type="text"]::placeholder,
+.formField textarea::placeholder {
+  color: color-mix(in srgb, var(--text-subtle) 55%, transparent);
+  opacity: 1;
+}
+
+.formField textarea {
+  resize: vertical;
+  min-height: 96px;
+}
+
+.formField input[type="text"]:focus,
+.formField textarea:focus,
+.formField select:focus {
+  border: 1.5px solid var(--primary);
+  outline: none;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--primary) 18%, transparent);
+  background: var(--surface);
+}
+
+.formField input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--primary);
+}
+
+.formFieldHelp {
+  font-size: 0.92rem;
+  color: var(--text-subtle);
+  line-height: 1.6;
+  margin-top: 2px;
+}

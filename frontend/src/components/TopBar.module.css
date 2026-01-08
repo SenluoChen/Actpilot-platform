@@ -1,0 +1,248 @@
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0 20px;
+  height: 72px;
+  box-shadow: var(--shadow-sm);
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: 80;
+  width: 100%;
+  transition: left 360ms cubic-bezier(0.22, 1, 0.36, 1),
+              width 360ms cubic-bezier(0.22, 1, 0.36, 1),
+              background 220ms ease,
+              box-shadow 360ms cubic-bezier(0.22, 1, 0.36, 1),
+              border-color 220ms ease;
+}
+
+/* When the app is pushed by the sidebar, visually blend the topbar
+   with the sidebar so they feel like one integrated surface. */
+:global(.sidebarOpen) .topbar,
+:global(.sidebar-open) .topbar {
+  /* Keep topbar fixed full-width; sidebar will overlay the page instead of pushing it */
+  left: 0;
+  width: 100%;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+}
+
+.topbarLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  flex: 1;
+}
+
+.topbarHeading {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  line-height: 1.1;
+  min-width: 0;
+}
+
+.topbarLogo {
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+  display: block;
+    margin-right: 6px;
+}
+
+.topbarHeading > div {
+  display: flex;
+  flex-direction: column;
+}
+
+.divider {
+  width: 1px;
+  height: 28px;
+  background: var(--border);
+  flex: 0 0 auto;
+}
+
+/* (removed duplicate .topbarHeading block) */
+
+.topbarTitle {
+  font-size: 1.08rem;
+  font-weight: 950;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.topbarSubtitle {
+  font-size: 0.88rem;
+  color: var(--text-subtle);
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.topbarActions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 6px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+}
+
+.userIconBtn {
+  /* make the white frame a perfect circle around the avatar */
+  width: 40px;
+  height: 40px;
+  box-sizing: border-box;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.userIconBtn:hover {
+  background: var(--surface-muted);
+}
+
+.userEmail {
+  margin-left: 8px;
+  font-weight: 800;
+  color: var(--text);
+  white-space: nowrap;
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 0.95rem;
+}
+
+/* Styled menu paper for user menu */
+.userMenuPaper {
+  border-radius: 12px !important;
+  border: 1px solid var(--border) !important;
+  box-shadow: 0 18px 50px rgba(11,17,32,0.18) !important;
+  min-width: 280px !important;
+  overflow: visible !important;
+  background: color-mix(in srgb, var(--surface) 86%, #ffffff 14%) !important;
+  backdrop-filter: blur(6px);
+}
+
+.userMenuHeader {
+  display: flex;
+  align-items: center;
+}
+
+.userMenuPaper .MuiDivider-root {
+  margin: 0;
+}
+
+.userMenuPaper .MuiMenuItem-root {
+  border-radius: 8px;
+}
+
+.userMenuPaper .MuiMenuItem-root:hover {
+  background: color-mix(in srgb, var(--primary) 8%, transparent);
+}
+
+.sidebarToggle {
+  background: none;
+  border: 1px solid transparent;
+  outline: none;
+  padding: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  border-radius: var(--radius-sm);
+  transition: background 0.18s, border-color 0.18s;
+  color: var(--text);
+}
+
+.sidebarToggle:hover {
+  background: var(--surface-muted);
+  border-color: var(--border);
+}
+
+.sidebarToggle:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.btn {
+  height: 40px;
+  padding: 0 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, transform 0.05s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn:hover {
+  background: var(--surface-muted);
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btnGhost {
+  background: transparent;
+  border-color: transparent;
+}
+
+.btnGhost:hover {
+  background: var(--surface-muted);
+  border-color: var(--border);
+}
+
+.btnPrimary {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--surface);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+}
+
+.btnPrimary:hover {
+  background: var(--primary-hover);
+  border-color: var(--primary-hover);
+}
+
+.btnPrimary:disabled {
+  background: color-mix(in srgb, var(--primary) 60%, transparent);
+  border-color: color-mix(in srgb, var(--primary) 60%, transparent);
+}
+
+/* Compact variant (used for Export PDF) */
+.btnCompact {
+  height: 34px;
+  padding: 0 12px;
+  border-radius: 999px;
+  font-weight: 800;
+}

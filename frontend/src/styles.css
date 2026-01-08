@@ -1,0 +1,361 @@
+:root {
+  color-scheme: light;
+}
+
+body {
+  margin: 0;
+  background: #f6f7fb;
+  color: #0f172a;
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+.actpilot-root {
+  display: flex;
+  min-height: 100vh;
+}
+
+.actpilot-sidebar {
+  width: 240px;
+  background: #f3f4f6;
+  border-right: 1px solid #e5e7eb;
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.actpilot-sidebar-title {
+  font-size: 16px;
+  font-weight: 700;
+  padding: 8px 12px;
+}
+
+.actpilot-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.actpilot-nav-item {
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  color: #334155;
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+}
+
+.actpilot-nav-active {
+  background: #111827;
+  color: #ffffff;
+}
+
+.actpilot-sidebar-footer {
+  margin-top: auto;
+  padding: 10px 12px;
+  color: #94a3b8;
+  font-size: 13px;
+}
+
+.actpilot-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.actpilot-topbar {
+  display: flex;
+  gap: 10px;
+  padding: 20px 24px 0 24px;
+}
+
+.actpilot-btn {
+  background: #2563eb;
+  color: #fff;
+  border: 0;
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.actpilot-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.actpilot-content {
+  display: grid;
+  grid-template-columns: 420px 1fr;
+  gap: 24px;
+  padding: 24px;
+}
+
+.actpilot-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.actpilot-card {
+  background: #ffffff;
+  border-radius: var(--radius-md);
+  padding: 18px;
+  box-shadow: 0 1px 10px rgba(15, 23, 42, 0.06);
+  border: 1px solid #eef2f7;
+}
+
+.actpilot-card h2 {
+  margin: 0 0 12px;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: #0f172a;
+}
+
+.actpilot-card label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #334155;
+  margin-bottom: 10px;
+}
+
+.actpilot-card input,
+.actpilot-card textarea {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  font-size: 14px;
+  color: #0f172a;
+}
+
+.actpilot-card textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+.actpilot-preview {
+  min-width: 0;
+}
+
+.actpilot-paper {
+  background: #ffffff;
+  border-radius: var(--radius-md);
+  padding: 28px;
+  box-shadow: 0 1px 10px rgba(15, 23, 42, 0.06);
+  border: 1px solid #eef2f7;
+}
+
+.actpilot-paper h1 {
+  margin: 0 0 18px;
+  font-size: 20px;
+}
+
+.actpilot-paper h2 {
+  margin: 20px 0 10px;
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #475569;
+}
+
+.actpilot-paper p,
+.actpilot-paper div {
+  font-size: 14px;
+  line-height: 1.55;
+  color: #0f172a;
+}
+
+.annex-preview {
+.annex-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.pdf-document {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+}
+
+.pdf-page {
+  width: 595px; /* A4 寬度（以 72 DPI 換算的畫素值） */
+  height: 842px; /* A4 高度（以 72 DPI 換算的畫素值） */
+  background: #fff;
+  border-radius: var(--radius-sm);
+  padding: 40px;
+  box-shadow: 0 4px 18px rgba(15,23,42,0.12);
+  border: 1px solid #e6eef8;
+
+  /* A4 多頁預覽（螢幕與列印） */
+  :root {
+    --a4-width: 210mm;
+    --a4-height: 297mm;
+    --a4-padding: 16mm;
+    --a4-header: 16mm;
+    --a4-footer: 14mm;
+  }
+
+  .a4-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .a4-page {
+    width: var(--a4-width);
+    height: var(--a4-height);
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.10);
+    margin: 0 auto;
+    overflow: hidden;
+    display: grid;
+    grid-template-rows: var(--a4-header) 1fr var(--a4-footer);
+  }
+
+  .a4-header {
+    padding: 10px var(--a4-padding) 0 var(--a4-padding);
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .a4-header-title {
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    font-size: 14px;
+    color: #0f172a;
+  }
+
+  .a4-header-meta {
+    text-align: right;
+    font-size: 12px;
+    color: #334155;
+    line-height: 1.35;
+  }
+
+  .a4-body {
+    padding: 12px var(--a4-padding);
+    overflow: hidden;
+  }
+
+  .a4-section {
+    margin-bottom: 12px;
+  }
+
+  .a4-section-title {
+    font-size: 12px;
+    font-weight: 800;
+    color: #0f172a;
+    margin: 0 0 6px 0;
+  }
+
+  .a4-kv {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .a4-kv-row {
+    display: grid;
+    grid-template-columns: 170px 1fr;
+    gap: 12px;
+  }
+
+  .a4-k {
+    color: #475569;
+    font-weight: 700;
+    font-size: 12px;
+  }
+
+  .a4-v {
+    color: #0f172a;
+    font-size: 13px;
+    white-space: pre-wrap;
+  }
+
+  .a4-footer {
+    padding: 0 var(--a4-padding) 10px var(--a4-padding);
+    border-top: 1px solid #e5e7eb;
+    font-size: 12px;
+    color: #64748b;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .a4-measure {
+    position: absolute;
+    left: -10000px;
+    top: 0;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  .preview-pdf {
+    margin-top: 12px;
+  }
+
+  @media print {
+    body {
+      background: #ffffff;
+    }
+
+    .a4-stack {
+      gap: 0;
+    }
+
+    .a4-page {
+      box-shadow: none;
+      border: none;
+      margin: 0;
+      page-break-after: always;
+    }
+
+    .preview-pdf {
+      display: none;
+    }
+  }
+.preview-pdf {
+  margin-top: 12px;
+}
+
+@media (max-width: 1080px) {
+  .pdf-page {
+    width: 100%;
+    height: auto;
+    min-height: 842px;
+  }
+  .content-columns {
+    grid-template-columns: 1fr;
+  }
+}
+
+.actpilot-link {
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.actpilot-error {
+  margin: 12px 24px 0 24px;
+  color: #b91c1c;
+  font-weight: 600;
+}
+
+@media (max-width: 1080px) {
+  .actpilot-content {
+    grid-template-columns: 1fr;
+  }
+}

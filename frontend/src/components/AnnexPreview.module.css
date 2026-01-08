@@ -1,0 +1,385 @@
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Playfair+Display:wght@400;700;900&display=swap');
+
+.annex-preview {
+  /* 由父層預覽面板（AnnexBuilderPage）控制畫布底色 */
+  background: transparent;
+  padding: 18px; /* 為 A4 頁提供緩衝空間，避免貼邊 */
+  /* 允許預覽延伸為多頁（滾動由父容器處理） */
+  min-height: 100%;
+  box-sizing: border-box;
+  border-radius: var(--radius-sm);
+}
+
+.a4-preview-frame {
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  max-width: 100%;
+  min-width: 0;
+  height: auto;
+}
+
+.pdf-preview {
+  height: 100%;
+  min-height: 100%;
+}
+
+.pdf-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}
+
+.a4-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.a4-stack {
+  padding-top: 0; 
+}
+
+.a4-pages {
+  display: flex;
+  flex-direction: column;
+  gap: 22px; /* 頁面之間維持間距，避免視覺貼合 */
+  align-items: center;
+  width: 100%;
+  padding-bottom: 18px;
+}
+
+.a4-page {
+  width: var(--a4-width);
+  height: var(--a4-height);
+  background: #ffffff;
+  box-shadow: var(--shadow-md);
+  margin: 0 auto;
+  overflow: hidden;
+  position: relative;
+  font-family: ui-serif, Georgia, 'Times New Roman', serif;
+  display: grid;
+  grid-template-rows: var(--a4-header) 1fr var(--a4-footer);
+}
+
+/* 正文字型使用 Libre Baskerville，維持文件的印刷質感 */
+.a4-page,
+.a4-body,
+.a4-meta-v,
+.a4-subtitle,
+.a4-meta-grid,
+.a4-meta-k {
+  font-family: 'Libre Baskerville', serif;
+}
+
+/* 標題與章節標題使用 Playfair Display，呈現更具份量的字體 */
+.a4-form-kicker,
+.a4-form-title,
+.a4-header-title,
+.a4-section-title,
+.a4-kicker {
+  font-family: 'Playfair Display', serif;
+}
+
+/* Template-image mode: show an exact A4 screenshot / scanned form. */
+.a4-template-page {
+  display: block;
+  padding: 0;
+  grid-template-rows: none;
+  box-shadow: none;
+}
+
+.a4-template-page::before,
+.a4-template-page::after {
+  display: none;
+}
+
+.a4-template-image {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+  background: #ffffff;
+}
+
+/* Double border like a paper form template */
+.a4-page::before,
+.a4-page::after {
+  content: '';
+  position: absolute;
+  pointer-events: none;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.a4-page::before {
+  /* removed outer black border for a cleaner preview look */
+  border: none;
+}
+
+.a4-page::after {
+  left: 6mm;
+  top: 6mm;
+  right: 6mm;
+  bottom: 6mm;
+  /* inner border removed to match requested look */
+  border: none;
+}
+
+.a4-header {
+  /* increased top padding to push header/content downward on the page */
+  padding: 32px var(--a4-padding) 0 var(--a4-padding);
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.a4-form-top {
+  display: grid;
+  grid-template-columns: 1fr 40mm;
+  gap: 8px; /* reduced gap so flag sits closer to header divider */
+  align-items: end; /* align flag lower in the header area */
+}
+
+.a4-eu-flag {
+  width: 40mm;
+  height: 24mm;
+  border: 1px solid #111827;
+  background-color: #1e3a8a;
+  /* 用純 CSS 模擬星環圖案（無外部資源） */
+  background-image:
+    radial-gradient(circle at 50% 14%, #fbbf24 0 1.2mm, transparent 1.35mm),
+    radial-gradient(circle at 66% 18%, #fbbf24 0 1.2mm, transparent 1.35mm),
+    radial-gradient(circle at 78% 30%, #fbbf24 0 1.2mm, transparent 1.35mm),
+    radial-gradient(circle at 82% 46%, #fbbf24 0 1.2mm, transparent 1.35mm),
+    radial-gradient(circle at 78% 62%, #fbbf24 0 1.2mm, transparent 1.35mm),
+    radial-gradient(circle at 66% 74%, #fbbf24 0 1.2mm, transparent 1.35mm),
+    radial-gradient(circle at 50% 78%, #fbbf24 0 1.2mm, transparent 1.35mm),
+    radial-gradient(circle at 34% 74%, #fbbf24 0 1.2mm, transparent 1.35mm),
+    radial-gradient(circle at 22% 62%, #fbbf24 0 1.2mm, transparent 1.35mm),
+    radial-gradient(circle at 18% 46%, #fbbf24 0 1.2mm, transparent 1.35mm),
+    radial-gradient(circle at 22% 30%, #fbbf24 0 1.2mm, transparent 1.35mm),
+    radial-gradient(circle at 34% 18%, #fbbf24 0 1.2mm, transparent 1.35mm);
+  background-repeat: no-repeat;
+  border-radius: 2px;
+}
+
+.a4-form-header-text {
+  min-width: 0;
+  padding-top: 2px;
+}
+
+.a4-form-kicker {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #111827;
+}
+
+.a4-form-title {
+  font-size: 13px;
+  font-weight: 700;
+  margin-top: 2px;
+  color: #111827;
+  line-height: 1.15;
+}
+
+.a4-form-subtitle {
+  font-size: 13px;
+  margin-top: 6px;
+  color: #111827;
+  line-height: 1.25;
+}
+
+.a4-form-rule {
+  /* 隱藏國旗下方的分隔線（依設計需求） */
+  display: none;
+}
+
+.a4-page.no-header .a4-header {
+  /* Keep the header element in the grid flow.
+     If we use `display:none`, the body becomes the first grid item and gets placed
+     into the 0-height row, making page 2 look blank/cropped. */
+  display: block; /* 保留元素於格線中，但不占高度，避免第二頁被裁切 */
+  height: 0;
+  padding: 0;
+  margin: 0;
+  border: none;
+  overflow: hidden;
+}
+
+/* Remove the reserved header row entirely for non-first pages. */
+.a4-page.no-header {
+  grid-template-rows: 0 1fr var(--a4-footer);
+}
+
+.a4-page.no-header .a4-body {
+    /* 針對第 2 頁以後（無標頭）調整上方與下方內距，
+      確保首行與頁尾分隔線之間有足夠的閱讀空間（約一行文字高度） */
+  padding: 18mm var(--a4-padding) calc(18mm + 1.55em);
+}
+
+.a4-kicker {
+  font-size: 12px;
+  font-weight: 700;
+  color: #334155;
+}
+
+.a4-header-title {
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  font-size: 16px;
+  color: #111827;
+  line-height: 1.25;
+}
+
+.a4-subtitle {
+  margin-top: 4px;
+  font-size: 12px;
+  color: #475569;
+}
+
+.a4-meta-grid {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  column-gap: 10px;
+  row-gap: 4px;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.a4-meta-k {
+  color: #475569;
+  font-weight: 700;
+}
+
+.a4-meta-v {
+  color: #111827;
+  word-break: break-word;
+}
+
+.a4-body {
+    /* 在內容區加入上下內距，讓頁內內容下移但不影響外部預覽容器；
+      底部內距讓最後一行文字不會被分隔線壓住，採用相對值以配合字級 */
+  padding: calc(14mm) var(--a4-padding) calc(18mm + 1.55em);
+  overflow: hidden;
+}
+
+.a4-section {
+  margin-bottom: 26px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.a4-section:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.a4-section-title {
+  font-size: 13px;
+  font-weight: 800;
+  color: #111827;
+  margin: 0 0 10px 0;
+  line-height: 1.25;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding-bottom: 4px;
+  border-bottom: 1px solid #111827;
+}
+
+.a4-section-number {
+  display: inline-block;
+  background: #1e3a8a;
+  color: #fff;
+  font-weight: 800;
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  margin-right: 12px;
+  font-size: 0.9rem;
+}
+
+.a4-kv {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.a4-kv-row {
+  display: grid;
+  grid-template-columns: 170px 1fr;
+  gap: 16px;
+  align-items: start;
+}
+
+.a4-k {
+  color: #475569;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.a4-v {
+  color: #111827;
+  font-size: 13px;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.a4-footer {
+  padding: 0 var(--a4-padding) 10px var(--a4-padding);
+  border-top: 1px solid #e5e7eb;
+  font-size: 12px;
+  color: #64748b;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  position: relative;
+}
+
+/* Page number shown in the bottom-right of each A4 page */
+.a4-page-number {
+  font-size: 11px;
+  color: #475569;
+  opacity: 0.95;
+  /* position the page number at the page bottom-right */
+  position: absolute;
+  right: 4mm;
+  bottom: 4; /* move slightly up from previous position */
+  transform: translateY(-1mm); 
+}
+
+.a4-measure {
+  /* Keep it in the layout engine (fixed on viewport) but invisible */
+  position: fixed;
+  left: 0;
+  top: 0;
+  transform: translateX(-250vw);
+  /* Must be real size so `clientHeight/offsetHeight` measurements work */
+  width: var(--a4-width);
+  height: auto;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Flag image styling: use a real image asset (Flag_of_Europe.svg.png) placed in public/ */
+.a4-eu-flag-img {
+  width: 30mm;
+  height: 20mm;
+  display: block;
+  object-fit: contain;
+  border: 1px solid #111827;
+  border-radius: 0;
+  background-color: #1e3a8a;
+  justify-self: end;
+}

@@ -1,0 +1,665 @@
+/* 產品介面樣式（AnnexBuilderPage）
+  - 選擇器保持局部範圍
+  - 僅調整樣式，不變更功能行為 */
+
+:root {
+  --bg: #f1f4f9;
+  --surface: #ffffff;
+  --surface-muted: #f6f8fb;
+  --border: #e2e8f0;
+  --text: #111827;
+  --text-muted: #475569;
+  --text-subtle: #64748b;
+  --primary: #4F6EF7; /* SaaS blue */
+  --primary-hover: #3e57d1;
+  --primary-50: color-mix(in srgb, var(--primary), #ffffff 80%);
+  --primary-20: color-mix(in srgb, var(--primary), #ffffff 90%);
+  --primary-hover: #3E5CED; /* darker hover */
+  --primary-pressed: #344ed1;
+  --primary-bg: #eef2ff; /* very light blue background */
+  --primary-muted: #f3f5ff;
+
+  --shadow-sm: 0 1px 2px #0001, 0 12px 30px #0001;
+  --shadow-md: 0 2px 10px #0001, 0 24px 60px #0002;
+
+  --radius-md: 20px;
+  --radius-sm: 14px;
+  --input-bg: #f4f6fb;
+
+  /* 表單輸入元件的高級樣式變數 */
+  --form-input-bg: #f6f8fb;
+  --form-input-border: #e2e8f0;
+  --form-input-radius: 12px;
+}
+
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  background: var(--bg);
+  margin: 0;
+  color: var(--text);
+  line-height: 1.5;
+}
+
+* { box-sizing: border-box; }
+
+/* 全域可讀性與程式碼區塊處理（供文件與 AI 資料展示使用） */
+p, div, span, pre {
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+pre {
+  white-space: pre-wrap; /* 保留 pre 格式但允許長行自動換行 */
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+code, kbd, samp, .excerpt {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.95rem;
+  background: var(--surface-muted);
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+}
+
+button, input, textarea, select { font: inherit; }
+/* 頂層佈局（TopBar / Sidebar）與相關元件的樣式已移入 CSS Modules；
+  本檔僅保留全域重設與變數，具體元件樣式請見各自的 module.css */
+
+.workspace-form {
+  min-height: 0;
+  padding: 24px 22px;
+  overflow: auto;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.workspace-preview {
+  min-height: 0;
+  padding: 22px;
+  transition: all 0.2s cubic-bezier(.4,1,.4,1);
+  overflow: auto;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+/* 自訂高質感捲軸（全域容器）
+  - 使用既有設計變數，外觀細緻低調 */
+.workspace-form,
+.workspace-preview {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--text-subtle) 45%, transparent) transparent;
+}
+
+.workspace-form::-webkit-scrollbar,
+.workspace-preview::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.workspace-form::-webkit-scrollbar-track,
+.workspace-preview::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.workspace-form::-webkit-scrollbar-thumb,
+.workspace-preview::-webkit-scrollbar-thumb {
+  background-color: color-mix(in srgb, var(--text-subtle) 38%, transparent);
+  border-radius: 999px;
+  border: 3px solid transparent;
+  background-clip: padding-box;
+}
+
+.workspace-form::-webkit-scrollbar-thumb:hover,
+.workspace-preview::-webkit-scrollbar-thumb:hover {
+  background-color: color-mix(in srgb, var(--text-subtle) 55%, transparent);
+}
+
+/* A4 多頁預覽（螢幕與列印樣式） */
+:root {
+  --a4-width: 210mm;
+  --a4-height: 297mm;
+  --a4-padding: 16mm;
+  /* 首頁標頭為表單式 masthead（包含國旗、標題與資訊） */
+  --a4-header: 48mm;
+  --a4-footer: 14mm;
+}
+
+.a4-preview-frame {
+  /* Remove the extra frame layer behind the A4 pages. */
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.a4-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.a4-page {
+  width: var(--a4-width);
+  height: var(--a4-height);
+  background: #ffffff;
+  box-shadow: var(--shadow-md);
+  margin: 0 auto;
+  overflow: hidden;
+  position: relative;
+  font-family: ui-serif, Georgia, 'Times New Roman', serif;
+  display: grid;
+  grid-template-rows: var(--a4-header) 1fr var(--a4-footer);
+}
+
+/* Template-image mode: show an exact A4 screenshot / scanned form. */
+.a4-template-page {
+  display: block;
+  padding: 0;
+  grid-template-rows: none;
+  box-shadow: none;
+}
+
+.a4-template-page::before,
+.a4-template-page::after {
+  display: none;
+}
+
+.a4-template-image {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+  background: #ffffff;
+}
+
+/* Double border like a paper form template */
+.a4-page::before,
+.a4-page::after {
+  content: '';
+  position: absolute;
+  pointer-events: none;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.a4-page::before {
+  border: 1px solid #111827;
+}
+
+.a4-page::after {
+  left: 6mm;
+  top: 6mm;
+  right: 6mm;
+  bottom: 6mm;
+  border: 1px solid #111827;
+}
+
+.a4-header {
+  padding: 12px var(--a4-padding) 0 var(--a4-padding);
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.a4-form-top {
+  display: grid;
+  grid-template-columns: 46mm 1fr;
+  gap: 14px;
+  align-items: start;
+}
+
+.a4-eu-flag {
+  width: 46mm;
+  height: 30mm;
+  border: 1px solid #111827;
+  background-color: #1e3a8a;
+  /* Simple star ring approximation (no external assets). */
+  background-image:
+    radial-gradient(circle at 50% 14%, #fbbf24 0 1.2mm, transparent 1.35mm),
+    radial-gradient(circle at 66% 18%, #fbbf24 0 1.2mm, transparent 1.35mm),
+    radial-gradient(circle at 78% 30%, #fbbf24 0 1.2mm, transparent 1.35mm),
+    radial-gradient(circle at 82% 46%, #fbbf24 0 1.2mm, transparent 1.35mm),
+    radial-gradient(circle at 78% 62%, #fbbf24 0 1.2mm, transparent 1.35mm),
+    radial-gradient(circle at 66% 74%, #fbbf24 0 1.2mm, transparent 1.35mm),
+    radial-gradient(circle at 50% 78%, #fbbf24 0 1.2mm, transparent 1.35mm),
+    radial-gradient(circle at 34% 74%, #fbbf24 0 1.2mm, transparent 1.35mm),
+    radial-gradient(circle at 22% 62%, #fbbf24 0 1.2mm, transparent 1.35mm),
+    radial-gradient(circle at 18% 46%, #fbbf24 0 1.2mm, transparent 1.35mm),
+    radial-gradient(circle at 22% 30%, #fbbf24 0 1.2mm, transparent 1.35mm),
+    radial-gradient(circle at 34% 18%, #fbbf24 0 1.2mm, transparent 1.35mm);
+  background-repeat: no-repeat;
+    border-radius: 0;
+}
+
+.a4-form-header-text {
+  min-width: 0;
+  padding-top: 2px;
+}
+
+.a4-form-kicker {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #111827;
+}
+
+.a4-form-title {
+  font-size: 22px;
+  font-weight: 800;
+  margin-top: 2px;
+  color: #111827;
+  line-height: 1.15;
+}
+
+.a4-form-subtitle {
+  font-size: 13px;
+  margin-top: 6px;
+  color: #111827;
+  line-height: 1.25;
+}
+
+.a4-form-rule {
+  height: 1px;
+  background: #111827;
+  width: 100%;
+}
+
+/* If a page should not show the header (only first page shows it), remove header box and pull up body */
+.a4-page.no-header .a4-header {
+  display: none;
+}
+
+/* Remove the reserved header row entirely for non-first pages. */
+.a4-page.no-header {
+  grid-template-rows: 0 1fr var(--a4-footer);
+}
+
+.a4-page.no-header .a4-body {
+  padding-top: 12px;
+}
+
+.a4-kicker {
+  font-size: 12px;
+  font-weight: 700;
+  color: #334155;
+}
+
+.a4-header-title {
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  font-size: 16px;
+  color: #111827;
+  line-height: 1.25;
+}
+
+.a4-subtitle {
+  margin-top: 4px;
+  font-size: 12px;
+  color: #475569;
+}
+
+.a4-meta-grid {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  column-gap: 10px;
+  row-gap: 4px;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.a4-meta-k {
+  color: #475569;
+  font-weight: 700;
+}
+
+.a4-meta-v {
+  color: #111827;
+  word-break: break-word;
+}
+
+.a4-body {
+  padding: 12px var(--a4-padding);
+  overflow: hidden;
+}
+
+.a4-section {
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.a4-section:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.a4-section-title {
+  font-size: 13px;
+  font-weight: 800;
+  color: #111827;
+  margin: 0 0 10px 0;
+  line-height: 1.25;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding-bottom: 4px;
+  border-bottom: 1px solid #111827;
+}
+
+.a4-section-number {
+  display: inline-block;
+  background: #1e3a8a;
+  color: #fff;
+  font-weight: 800;
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  margin-right: 12px;
+  font-size: 0.9rem;
+}
+
+.a4-kv {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.a4-kv-row {
+  display: grid;
+  grid-template-columns: 170px 1fr;
+  gap: 16px;
+  align-items: start;
+}
+
+.a4-k {
+  color: #475569;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.a4-v {
+  color: #111827;
+  font-size: 13px;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.a4-footer {
+  padding: 0 var(--a4-padding) 10px var(--a4-padding);
+  border-top: 1px solid #e5e7eb;
+  font-size: 12px;
+  color: #64748b;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.a4-measure {
+  position: absolute;
+  left: -10000px;
+  top: 0;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+@media print {
+  body {
+    background: #ffffff;
+  }
+
+  .workspace-root,
+  .workspace-main,
+  .workspace-content,
+  .workspace-preview {
+    overflow: visible;
+    background: #ffffff;
+  }
+
+  .a4-preview-frame {
+    padding: 0;
+    background: transparent;
+    border: none;
+  }
+
+  .a4-stack {
+    gap: 0;
+  }
+
+  .a4-page {
+    box-shadow: none;
+    border: none;
+    margin: 0;
+    page-break-after: always;
+  }
+
+  .preview-pdf {
+    display: none;
+  }
+}
+
+/* Minimal, modern form panel */
+.annex-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 0;
+}
+.form-section {
+  /* Floating card look */
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  padding: 18px 18px 16px 18px;
+  margin-bottom: 0;
+}
+.form-section:last-child {
+  border-bottom: none;
+}
+
+/* Premium light-gray inputs scoped to form panels only */
+.form-section input,
+.form-section textarea,
+.form-section select {
+  background: var(--form-input-bg);
+  border: 1px solid var(--form-input-border);
+  color: var(--text);
+  padding: 10px 12px;
+  border-radius: var(--form-input-radius);
+  outline: none;
+  transition: box-shadow 0.12s ease, border-color 0.12s ease;
+}
+
+.form-section input::placeholder,
+.form-section textarea::placeholder {
+  color: var(--text-subtle);
+}
+
+.form-section input:focus,
+.form-section textarea:focus,
+.form-section select:focus {
+  border-color: color-mix(in srgb, var(--primary) 16%, var(--form-input-border));
+  box-shadow: 0 6px 18px rgba(36,52,71,0.06);
+}
+
+.form-section select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, var(--text-subtle) 50%), linear-gradient(135deg, var(--text-subtle) 50%, transparent 50%);
+  background-position: calc(100% - 18px) calc(1em + 2px), calc(100% - 14px) calc(1em + 2px);
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+}
+.form-section-title {
+  font-size: 1.10rem;
+  font-weight: 900;
+  letter-spacing: 0.01em;
+  color: #111827;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(16, 24, 40, 0.06);
+  margin-bottom: 12px;
+}
+.form-section-subtitle {
+  font-size: 0.97rem;
+  color: #64748b;
+  line-height: 1.6;
+  margin-bottom: 14px;
+  max-width: 70ch;
+}
+.form-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.form-field-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  line-height: 1.25;
+  font-size: 1.01rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 2px;
+}
+.form-field-suggested {
+  font-size: 0.78rem;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #f1f5f9;
+  border: 1px solid #e5e7eb;
+  color: #64748b;
+  font-weight: 600;
+}
+/* Remove legacy label styling */
+
+.form-field input[type="text"],
+.form-field textarea,
+.form-field select {
+    border: 1px solid #e5e7eb;
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+    font-size: 1rem;
+    line-height: 1.5;
+    background: var(--input-bg);
+    transition: border 0.15s, box-shadow 0.15s;
+    color: #1e293b;
+}
+
+.form-field input[type="text"]::placeholder,
+.form-field textarea::placeholder {
+  color: #b6beca;
+  opacity: 1;
+}
+
+.form-field textarea {
+  resize: vertical;
+  min-height: 96px;
+}
+.form-field input[type="text"]:focus,
+.form-field textarea:focus,
+.form-field select:focus {
+  border: 1.5px solid #2563eb;
+  outline: none;
+  box-shadow: 0 0 0 2px #2563eb22;
+  background: #fff;
+}
+.form-field input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #2563eb;
+}
+.form-field-help {
+  font-size: 0.92rem;
+  color: #64748b;
+  line-height: 1.6;
+  margin-top: 2px;
+}
+
+.folder-upload-error {
+  margin-top: 10px;
+  color: #b91c1c;
+  font-weight: 600;
+}
+
+@media (max-width: 1100px) {
+  .layout {
+    grid-template-columns: 1fr;
+    padding: 16px;
+  }
+
+  .workspace {
+    position: static;
+    max-height: none;
+    overflow: visible;
+    padding-bottom: 12px;
+    padding-right: 0;
+  }
+
+  .document {
+    padding: 16px;
+    min-height: auto;
+  }
+}
+
+.annex-preview {
+  background: none;
+  padding: 0;
+}
+.preview-paper {
+  background: #fff;
+  border-radius: var(--radius-md);
+  box-shadow: 0 2px 8px #0001;
+  padding: 32px 36px 28px 36px;
+  margin-bottom: 24px;
+}
+.preview-section {
+  margin-bottom: 18px;
+}
+.preview-section h3 {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.preview-field {
+  margin-bottom: 6px;
+  font-size: 1rem;
+  line-height: 1.55;
+}
+.preview-pdf {
+  margin-top: 18px;
+  background: #fff;
+  border-radius: var(--radius-sm);
+  box-shadow: 0 2px 8px #0001;
+  padding: 16px;
+}
+
+/* Document preview container: increase width and breathing room */
+.document-preview {
+  max-width: 1000px; /* increased from 820px for better layout on wider screens */
+  margin: 20px auto;
+  padding: 40px; /* more inner spacing to avoid content hugging edges */
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}

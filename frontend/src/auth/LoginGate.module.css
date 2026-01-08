@@ -1,0 +1,447 @@
+.root {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 64px 16px; /* increased vertical padding to add more top/bottom margin */
+  background: #ffffff;
+}
+
+.card {
+  width: 100%;
+  max-width: 980px;
+  border-radius: 22px;
+  overflow: hidden;
+  position: relative;
+  background: #ffffff;
+  border: none;
+  box-shadow: var(--shadow-md);
+  margin: 24px 0; /* extra vertical breathing room */
+}
+
+.cardRedirecting {
+  transform: translateY(-1px);
+}
+
+.header {
+  /* header visual removed - logo moved into body to make inputs sit higher */
+  display: none;
+}
+
+.header::after {
+  content: '';
+  position: absolute;
+  left: -18%;
+  right: -18%;
+  display: none;
+}
+
+.brand {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 18px;
+  text-align: center;
+  margin: 48px 0; /* increased vertical margins */
+}
+
+.logo {
+  width: 54px;
+  height: 54px;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+}
+
+.brandName {
+  font-weight: 900;
+  letter-spacing: 0.04em;
+}
+
+.body {
+  padding: 0;
+}
+
+.cardRedirecting .body {
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.redirectOverlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: color-mix(in srgb, var(--surface) 72%, transparent);
+}
+
+.redirectBox {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.spinner {
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  border: 3px solid color-mix(in srgb, var(--border) 70%, transparent);
+  border-top-color: var(--primary);
+  animation: spin 0.9s linear infinite;
+}
+
+.redirectText {
+  font-weight: 800;
+  color: var(--text);
+  font-size: 13px;
+}
+
+/* Splash animation for login redirect */
+.splashOverlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface);
+  z-index: 200;
+}
+
+.splashBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.splashLogo {
+  width: 220px;
+  height: 220px;
+  object-fit: contain;
+  /* Default state should be visible even if animation is disabled */
+  opacity: 1;
+  transform: scale(0.98);
+  will-change: transform, opacity;
+  animation: splashIn 650ms cubic-bezier(0.2, 0.85, 0.2, 1) forwards;
+}
+
+@keyframes splashIn {
+  0% { opacity: 0; transform: scale(0.7); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spinner {
+    animation: none;
+  }
+
+  .splashLogo {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .splashOverlay {
+    animation: none;
+    opacity: 1;
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  min-height: 560px;
+}
+
+.leftPane {
+  position: relative;
+  padding: 36px;
+  color: #ffffff;
+  overflow: hidden;
+  isolation: isolate;
+  background:
+    radial-gradient(110% 90% at 30% 30%, color-mix(in srgb, var(--primary) 65%, #ffffff 35%) 0%, transparent 62%),
+    radial-gradient(90% 70% at 70% 55%, color-mix(in srgb, var(--primary) 55%, #000000 45%) 0%, transparent 60%),
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--primary) 72%, #000000 28%) 0%,
+      color-mix(in srgb, var(--primary-hover) 70%, #000000 30%) 55%,
+      color-mix(in srgb, var(--primary) 70%, #000000 30%) 100%
+    );
+}
+
+.leftPane::before {
+  content: '';
+  position: absolute;
+  inset: -80px;
+  z-index: 0;
+  background:
+    /* soft blob at bottom-left */
+    radial-gradient(closest-side at 16% 92%, color-mix(in srgb, var(--primary) 42%, #000000 58%) 0%, transparent 72%),
+    /* soft blob at top-right */
+    /* top-right burst removed */
+    /* subtle glow mid-left */
+    radial-gradient(closest-side at 28% 44%, color-mix(in srgb, #ffffff 12%, transparent) 0%, transparent 72%),
+    /* subtle glow bottom-right */
+    radial-gradient(closest-side at 82% 78%, color-mix(in srgb, var(--primary) 24%, transparent) 0%, transparent 74%);
+  pointer-events: none;
+  opacity: 0.9;
+}
+
+.leftPane::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.95;
+  background:
+    /* large hollow ring removed */
+    /* small bubbles bottom-right */
+    radial-gradient(circle at 86% 88%, color-mix(in srgb, #ffffff 10%, transparent) 0% 7%, transparent 8%),
+    radial-gradient(circle at 78% 92%, color-mix(in srgb, #ffffff 8%, transparent) 0% 4.5%, transparent 5.5%),
+    radial-gradient(circle at 74% 84%, color-mix(in srgb, var(--primary) 20%, transparent) 0% 6%, transparent 7%);
+}
+
+.leftTop {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.leftLogo {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+  opacity: 0.95;
+}
+
+.leftBrandText {
+  font-weight: 950;
+  letter-spacing: 0.06em;
+  font-size: 16px;
+  opacity: 0.98;
+  -webkit-font-smoothing: antialiased;
+  text-shadow: 0 0 0.6px rgba(0,0,0,0.04);
+}
+
+.leftContent {
+  position: relative;
+  z-index: 1;
+  margin-top: 72px;
+}
+
+.leftHeadline {
+  font-weight: 950;
+  font-size: 44px;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+}
+
+.leftSubhead {
+  margin-top: 12px;
+  font-size: 15px;
+  opacity: 0.92;
+}
+
+.leftFooter {
+  position: absolute;
+  left: 36px;
+  bottom: 26px;
+  font-size: 12px;
+  opacity: 0.85;
+  z-index: 1;
+}
+
+.rightPane {
+  position: relative;
+  z-index: 1;
+  padding: 44px 44px 40px 44px;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.rightHeader {
+  margin-bottom: 18px;
+}
+
+.rightTitle {
+  margin: 0 0 12px 0;
+  font-size: 26px;
+  font-weight: 900;
+  color: var(--text);
+  text-align: left;
+  padding-bottom: 8px; /* extra spacing below title */
+}
+
+.actions {
+  display: grid;
+  gap: 16px;
+}
+
+.primaryBtn,
+.secondaryBtn {
+  height: 44px;
+  border-radius: 999px;
+  font-weight: 800;
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+
+.primaryBtn {
+  color: #ffffff;
+  background: linear-gradient(
+    90deg,
+    var(--primary) 0%,
+    color-mix(in srgb, var(--primary) 70%, var(--primary-hover) 30%) 100%
+  );
+  box-shadow: 0 10px 24px color-mix(in srgb, var(--primary) 22%, transparent);
+}
+
+.primaryBtn:hover {
+  filter: brightness(0.98);
+}
+
+.secondaryBtn {
+  background: var(--surface);
+  color: var(--primary);
+  border-color: color-mix(in srgb, var(--primary) 30%, var(--border));
+}
+
+.secondaryBtn:hover {
+  background: var(--primary-20);
+}
+
+.form {
+  display: grid;
+  gap: 16px;
+  max-width: 380px;
+  width: 100%;
+  margin: 0;
+}
+
+.input {
+  height: 44px;
+  padding: 0 14px;
+  /* larger rounded corners for login inputs */
+  border-radius: 12px;
+  border: 1px solid var(--form-input-border);
+  background: var(--form-input-bg);
+  outline: none;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+/* wrapper that holds an input and an icon inside the input's container */
+.inputRow {
+  position: relative;
+  width: 100%;
+  display: block;
+}
+
+.inputRow .input {
+  /* give room for the icon placed inside the input */
+  padding-right: 48px;
+}
+
+.iconBtn {
+  /* MUI injects styles late; force absolute positioning */
+  position: absolute !important;
+  right: 8px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  z-index: 2;
+  background: transparent;
+  border: none;
+  padding: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+}
+
+.iconBtn:hover {
+  background: transparent;
+}
+
+.input:focus {
+  border-color: color-mix(in srgb, var(--primary) 55%, var(--form-input-border));
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--primary) 18%, transparent);
+}
+
+.helperRow {
+  display: flex;
+  justify-content: flex-start;
+  gap: 12px;
+  margin-top: 14px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.linkBtn {
+  background: transparent;
+  border: none;
+  color: var(--primary);
+  cursor: pointer;
+  padding: 0;
+  font-weight: 800;
+}
+
+.error {
+  margin-top: 14px;
+  font-size: 13px;
+  color: #b91c1c;
+  text-align: left;
+}
+
+/* Hide Edge/IE built-in password reveal/clear icons so we only show the MUI eye. */
+.input::-ms-reveal,
+.input::-ms-clear {
+  display: none;
+}
+
+.note {
+  margin-top: 14px;
+  font-size: 12px;
+  color: var(--text-subtle);
+  text-align: left;
+}
+
+@media (max-width: 860px) {
+  .card {
+    max-width: 560px;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+    min-height: 0;
+  }
+
+  .leftPane {
+    display: none;
+  }
+
+  .rightPane {
+    padding: 28px 24px 24px 24px;
+  }
+
+  .form {
+    max-width: 420px;
+  }
+}

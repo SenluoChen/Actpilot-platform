@@ -1,0 +1,42 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "private": true,
+  "bin": {
+    "ai-act-mvp-backend-layered-ts": "bin/app.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "cdk": "cdk",
+    "deploy": "npm run build && cdk deploy AiActLayeredBackend --require-approval never",
+    "deploy:frontend": "npm --prefix ../frontend run build && npm run build && cdk deploy AiActLayeredFrontend --require-approval never",
+    "deploy:all": "npm --prefix ../frontend run build && npm run build && cdk deploy --all --require-approval never",
+    "destroy": "cdk destroy --force",
+    "local": "ts-node scripts/local-run.ts"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.152",
+    "@types/node": "^20.19.27",
+    "@types/pdfkit": "^0.17.3",
+    "@types/qrcode": "^1.5.5",
+    "aws-cdk": "2.150.0",
+    "aws-cdk-lib": "2.150.0",
+    "constructs": "10.3.0",
+    "dotenv": "^16.6.1",
+    "esbuild": "^0.21.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.637.0",
+    "@aws-sdk/client-s3": "^3.637.0",
+    "@aws-sdk/lib-dynamodb": "^3.637.0",
+    "@aws-sdk/s3-request-presigner": "^3.637.0",
+    "pdfkit": "^0.15.0",
+    "qrcode": "^1.5.4",
+    "source-map-support": "^0.5.21",
+    "undici": "^5.3.0",
+    "uuid": "^9.0.1"
+  }
+}

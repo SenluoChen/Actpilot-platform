@@ -1,0 +1,670 @@
+.riskScope {
+  /* 區域主題變數（配合應用色票，避免覆寫全域） */
+  --rc-bg: transparent;
+  --rc-card: #ffffff;
+  --rc-text: #0f172a;
+  --rc-muted: #475569;
+  --rc-stroke: #e5e7eb;
+  --rc-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+    /* 儘量使用全域主色變數以跟隨整體主題；
+      在此對主色做小幅藍色偏移，微調視覺色調 */
+  --rc-primary: color-mix(in srgb, var(--primary, #243447) 88%, #2b6cff 12%);
+  --rc-primary-hover: color-mix(in srgb, var(--primary-hover, #1f3138) 88%, #2b6cff 12%);
+  --rc-primary-contrast: #ffffff;
+
+  color: var(--rc-text);
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  /* 當卡片視覺寬度增加時，避免產生水平滾動條 */
+  overflow-x: hidden;
+  width: 100%;
+  /* Fill the available content area (AnnexBuilderPage already accounts for the fixed topbar). */
+  height: 100%;
+  min-height: 0;
+  background: transparent;
+}
+
+.riskScope .page {
+  /* 將內容置於固定標頭之下，使用 align-start 減少與導覽列的空隙 */
+  flex: 1 1 auto;
+  min-height: 0;
+  box-sizing: border-box; /* include padding in max-height calculations */
+  max-height: calc(100vh - 72px); /* fit under fixed topbar */
+  padding: 12px 18px 36px; /* smaller top padding to reduce space from navbar */
+  /* 允許垂直捲動，並阻止水平捲動 */
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: transparent;
+  display: flex;
+  align-items: flex-start; /* move card closer to top (near navbar) */
+  justify-content: center;
+  width: 100%;
+  max-width: 100%;
+  transform-origin: center center;
+}
+
+.riskScope .container {
+  max-width: 920px; /* increase container so card can scale up proportionally */
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 12px;
+  display: flex;
+  align-items: flex-start; /* align to top so content doesn't vertically center when tall */
+  justify-content: center;
+  min-height: 0;
+}
+
+.riskScope .header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.riskScope .brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+}
+
+.riskScope .brandMark {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--rc-primary);
+  color: var(--rc-primary-contrast);
+}
+
+.riskScope .card {
+  background: var(--rc-card);
+  border: 1px solid var(--rc-stroke);
+  border-radius: 16px;
+  box-shadow: var(--rc-shadow);
+  padding: 64px; /* increased padding so inner items have more breathing room */
+  /* Make the visual card fill the available page area while keeping
+     inner content constrained to the previous max width so content
+     size/position stays the same. */
+  /* Wide card (nearly full viewport width), but keep content constrained via `.card > *` */
+  width: calc(100vw - 36px);
+  max-width: 1400px;
+  position: relative;
+  left: auto;
+  transform: none;
+  margin-left: auto;
+  margin-right: auto;
+  min-height: auto; /* allow card to size to content */
+  margin-top: 10px; /* small positive offset from top for a balanced gap */
+  margin-bottom: 28px; /* ensure visible space below the card */
+
+  /* Allow the card to grow but constrain its maximum height so it doesn't get cut off. */
+  max-height: calc(100vh - 72px - 48px);
+  box-sizing: border-box;
+}
+
+/* Tweak the shared ProgressBar styles to sit cleanly inside the card */
+.riskScope .progressWrap {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 4px 0; /* flatter container */
+  margin-bottom: 12px;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+/* Ensure the progress wrapper is not constrained by the `.card > *` max-width rule
+   so the track can extend edge-to-edge inside the visual card. */
+.riskScope .card > div:first-of-type {
+  /* layout row containing the step label and the ProgressBar */
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+.riskScope .card > div:first-of-type .muted {
+  margin: 0;
+  font-size: 13px;
+  color: var(--rc-muted);
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+.riskScope .card > div:first-of-type > .progressWrap {
+  /* make the progress take remaining horizontal space */
+  flex: 1 1 auto;
+  max-width: none;
+  width: 100%;
+  margin: 0;
+  padding: 12px 0;
+  display: flex;
+  align-items: center;
+}
+.riskScope .progressLabel {
+  display: none; /* we don't use the left label here */
+}
+.riskScope .progressPct {
+  display: block;
+  flex: 0 0 auto;
+  font-weight: 700;
+  color: var(--rc-muted);
+  font-size: 13px;
+  margin-left: 6px;
+}
+.riskScope .progressTrack {
+  height: 4px; /* flatter/thinner bar */
+  border-radius: 4px; /* subtler corners */
+  background: color-mix(in srgb, var(--rc-stroke) 72%, var(--rc-card)); /* light neutral track */
+  flex: 1 1 auto;
+  overflow: hidden; /* contain the fill */
+  position: relative;
+}
+.riskScope .progressFill {
+  box-shadow: none;
+  background: var(--rc-primary); /* solid primary fill */
+  height: 100%;
+  width: 0%; /* width controlled by inline style from component */
+  min-width: 8px; /* ensure visible fill at low percentages */
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+  transition: width 260ms cubic-bezier(.2,.9,.2,1);
+}
+
+/* Constrain direct children so inner content keeps previous max width
+   and central position (content size/position unchanged). */
+.riskScope .card > * {
+  max-width: 880px;
+  margin: 0 auto;
+}
+
+/* Make the result card lay out horizontally on wide screens to avoid internal scrolling */
+.riskScope .resultCard {
+  display: block; /* conservative vertical layout */
+}
+
+.riskScope .resultCard .resultSummary,
+.riskScope .resultCard .resultSection {
+  width: 100%;
+}
+
+/* Ensure card content flows naturally and text wraps normally */
+.riskScope .resultItem,
+.riskScope .resultItemText,
+.riskScope .resultSummaryText {
+  white-space: normal;
+  word-break: break-word;
+}
+
+/* Keep content inside the card (results won't spill outside). */
+.riskScope .card {
+  overflow: auto;
+  max-height: none;
+}
+
+.riskScope .resetBtn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  height: 34px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.riskScope .intro-container {
+  max-width: 840px;
+  margin: 0 auto;
+  padding: 6px 0 0 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 12px;
+}
+
+.riskScope .title {
+  font-size: 24px;
+  line-height: 1.18;
+  font-weight: 800;
+  margin: 0 0 12px; /* more space under the title */
+}
+
+.riskScope .muted {
+  color: var(--rc-muted);
+}
+
+.riskScope .row {
+  display: flex;
+  gap: 14px; /* more lateral spacing between controls */
+  flex-wrap: wrap;
+}
+
+.riskScope .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px; /* slightly larger gap inside buttons */
+  height: 48px; /* slightly taller buttons for visual balance */
+  padding: 0 18px;
+  border-radius: 12px;
+  border: 1px solid var(--rc-stroke);
+  background: var(--rc-card);
+  color: var(--rc-text);
+  font-weight: 650;
+  cursor: pointer;
+  transition: background 120ms ease, border-color 120ms ease, transform 120ms ease;
+}
+
+.riskScope .btn:hover {
+  border-color: color-mix(in srgb, var(--rc-primary) 35%, #ffffff);
+  background: color-mix(in srgb, var(--rc-primary) 4%, #ffffff);
+}
+
+.riskScope .btn:active {
+  transform: translateY(1px);
+}
+
+.riskScope .btn--primary {
+  background: var(--rc-primary);
+  border-color: var(--rc-primary);
+  color: var(--rc-primary-contrast);
+}
+
+.riskScope .btn--primary:hover {
+  background: var(--rc-primary-hover);
+  border-color: var(--rc-primary-hover);
+}
+
+.riskScope .btn--ghost {
+  background: transparent;
+}
+
+.riskScope .pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 20px; /* slightly larger capsule for presence */
+  border-radius: 999px;
+  /* soft, pale capsule gradient derived from primary */
+  background: linear-gradient(180deg,
+    color-mix(in srgb, var(--rc-primary) 8%, #ffffff),
+    color-mix(in srgb, var(--rc-primary) 4%, #ffffff)
+  );
+  color: var(--rc-primary);
+  font-weight: 700;
+  font-size: 13px;
+  margin-bottom: 18px; /* more gap below the pill */
+  margin-top: -8px; /* nudge the pill upward slightly */
+  box-shadow: 0 12px 36px color-mix(in srgb, var(--rc-primary) 6%, #0000);
+  border: 1px solid color-mix(in srgb, var(--rc-primary) 12%, #ffffff);
+  letter-spacing: 0.01em;
+}
+
+/* Utility: hide pills by adding `no-pills` to the `.riskScope` container */
+.riskScope.no-pills .pill,
+.riskScope.no-pills .resultPill {
+  display: none !important;
+}
+
+/* Result pill color variants by risk level */
+.riskScope .resultPill--prohibited {
+  /* Pure red */
+  background: #ff0000;
+  border-color: #ff0000;
+  color: #ffffff;
+}
+.riskScope .resultPill--high {
+  /* Pure orange */
+  background: #ffa500;
+  border-color: #ffa500;
+  color: #ffffff;
+}
+.riskScope .resultPill--limited {
+  /* Pure blue */
+  background: #0000ff;
+  border-color: #0000ff;
+  color: #ffffff;
+}
+.riskScope .resultPill--minimal {
+  /* Pure green */
+  background: #00ff00;
+  border-color: #00ff00;
+  color: #000000;
+}
+
+.riskScope .resultPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  border-radius: 18px;
+  font-weight: 900;
+  border: 1px solid transparent;
+  box-shadow: 0 8px 18px rgba(15,23,42,0.06);
+  background-clip: padding-box;
+}
+
+/* Ensure icons inside result pills are visible on colored backgrounds */
+.riskScope .resultPill svg {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
+  color: #ffffff;
+  fill: #ffffff;
+  stroke: #ffffff;
+}
+
+/* increase spacing between options and the bottom action row (Back / Next) */
+.riskScope .card > .section.row {
+  padding-top: 26px; /* more vertical breathing room before action row */
+}
+
+/* Hide the 'Current: ...' text inside the step pill for question pages */
+.riskScope .card > .pill > span:last-child {
+  display: none !important;
+}
+
+/* Make the pill icon match the capsule aesthetic */
+.riskScope .pill svg {
+  color: var(--rc-primary);
+  width: 16px;
+  height: 16px;
+}
+
+.riskScope .grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px; /* more spacing between grid panels */
+  margin-top: 16px;
+}
+
+@media (min-width: 900px) {
+  .riskScope .grid {
+    grid-template-columns: 1.2fr 0.8fr;
+  }
+}
+
+/* Ensure single card results span both grid columns and don't collapse */
+.riskScope .grid > .card {
+  grid-column: 1 / -1;
+  justify-self: center;
+  align-self: start;
+}
+
+.riskScope .questionTitle {
+  font-weight: 800;
+  margin: 0 0 40px; /* increased separation between question title and options */
+}
+
+/* Question header with left dot */
+.riskScope .questionHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.riskScope .titleDot {
+  display: none; /* remove the colored dot beside question titles */
+}
+
+/* Ensure the title text inside the header aligns vertically with the dot */
+.riskScope .questionHeader .title {
+  margin: 0; /* remove bottom margin used elsewhere */
+  line-height: 1.18;
+}
+
+.riskScope .titleDot {
+  align-self: center;
+}
+
+.riskScope .options {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px; /* larger gap so option tiles don't feel cramped */
+  margin-top: 56px; /* increased spacing between question content and options */
+}
+
+@media (min-width: 680px) {
+  .riskScope .options {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.riskScope .option {
+  text-align: left;
+  padding: 14px; /* more internal padding for readability */
+  border-radius: 18px;
+  border: 1px solid var(--rc-stroke);
+  background: var(--rc-card);
+  cursor: pointer;
+  transition: transform 180ms cubic-bezier(.2,.9,.2,1), box-shadow 180ms ease, border-color 140ms ease, background 120ms ease;
+  will-change: transform, box-shadow;
+  /* subtle base elevation to feel modern */
+  box-shadow: 0 4px 10px rgba(15,23,42,0.04);
+}
+
+.riskScope button.option:hover {
+  border-color: var(--rc-primary);
+  background: color-mix(in srgb, var(--rc-primary) 3%, #ffffff);
+  transform: translateY(-6px);
+  box-shadow:
+    0 18px 40px color-mix(in srgb, var(--rc-primary) 6%, rgba(15,23,42,0.06)),
+    /* subtle blue ring for a techy outline */
+    0 0 0 4px color-mix(in srgb, var(--rc-primary) 12%, #0000);
+}
+
+.riskScope button.option.option--active {
+  border-color: var(--rc-primary);
+  background: color-mix(in srgb, var(--rc-primary) 8%, #ffffff);
+  transform: translateY(-4px);
+  box-shadow:
+    0 14px 36px color-mix(in srgb, var(--rc-primary) 6%, rgba(15,23,42,0.05)),
+    0 0 0 6px color-mix(in srgb, var(--rc-primary) 14%, #0000);
+}
+
+/* Result card (minimal, professional) */
+.riskScope .resultCard {
+  padding-top: 46px; /* leave breathing room under reset button */
+}
+
+.riskScope .resultHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.riskScope .resultTitle {
+  font-size: 20px;
+  line-height: 1.2;
+  font-weight: 850;
+  margin: 0 0 12px;
+}
+
+/* Icon placed before the Summary title */
+.riskScope .resultTitle .summaryIcon {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+  vertical-align: middle;
+  color: var(--rc-primary);
+}
+
+.riskScope .resultSummary {
+  padding: 24px 24px;
+  border-radius: 24px;
+  border: 1px solid var(--rc-stroke);
+  background: #ffffff;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.05);
+  margin-bottom: 26px;
+}
+
+.riskScope .resultSummaryText {
+  margin: 0;
+  line-height: 1.55;
+  color: var(--rc-text);
+}
+
+.riskScope .resultSection {
+  margin-top: 22px;
+  padding-top: 18px;
+}
+
+.riskScope .resultSectionTitle {
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  margin: 0 0 14px;
+  color: var(--rc-text);
+}
+
+.riskScope .resultList {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.riskScope .resultItem {
+  display: flex;
+  align-items: center; /* vertically center icon and text */
+  gap: 12px;
+  padding: 18px 18px;
+  border-radius: 14px;
+  border: 1px solid color-mix(in srgb, var(--rc-stroke) 80%, #ffffff);
+  background: linear-gradient(
+    180deg,
+    #ffffff,
+    color-mix(in srgb, var(--rc-primary) 1.5%, #ffffff)
+  );
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.04);
+}
+
+.riskScope .resultItemIcon {
+  flex: 0 0 auto;
+  margin-top: 1px;
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--rc-primary);
+  background: color-mix(in srgb, var(--rc-primary) 8%, #ffffff);
+  border: 1px solid color-mix(in srgb, var(--rc-primary) 12%, var(--rc-stroke));
+}
+
+.riskScope .resultItemIcon svg {
+  width: 16px;
+  height: 16px;
+}
+
+.riskScope .resultItemText {
+  font-weight: 750;
+  line-height: 1.4;
+}
+
+.riskScope .resultItem--muted .resultItemText {
+  font-weight: 650;
+  color: var(--rc-muted);
+}
+
+@media (max-width: 700px) {
+  .riskScope .resultHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* Option label styling (main text) */
+.riskScope .optionLabel {
+  font-weight: 800; /* stronger main text */
+  font-size: 15px;
+  line-height: 1.2;
+}
+
+.riskScope .resultBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--rc-stroke);
+  background: rgba(15, 23, 42, 0.03);
+  font-weight: 700;
+}
+
+.riskScope .section {
+  margin-top: 18px; /* separate sections more clearly */
+}
+
+.riskScope .intro-container {
+  text-align: center;
+  padding: 22px; /* slightly more breathing room for intro copy */
+  margin-top: 18px; /* nudge the intro card downward on the Y-axis */
+}
+
+.riskScope .intro-header {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 14px;
+}
+
+.riskScope .intro-logo {
+  height: 56px;
+  width: auto;
+  object-fit: contain;
+}
+
+.riskScope .intro-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 800;
+}
+
+.riskScope .intro-mark {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--rc-primary);
+  color: var(--rc-primary-contrast);
+}
+
+.riskScope .intro-title {
+  margin-top: 6px;
+  font-size: 28px;
+}
+
+.riskScope .intro-description {
+  margin: 0 auto;
+  max-width: 56ch;
+}
+
+.riskScope .intro-button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 18px;
+}
+
+/* Make card more prominent on very large screens */
+@media (min-width: 1400px) {
+  .riskScope .card {
+    /* Keep padding stable so content size/position doesn't change */
+    padding: 64px;
+  }
+  .riskScope .intro-title { font-size: 40px; }
+}

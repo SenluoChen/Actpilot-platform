@@ -1,0 +1,327 @@
+.workspaceRoot {
+  display: flex;
+  min-height: 100vh;
+  /* 整個頁面不允許垂直捲動，各面板各自管理自己的滾動行為 */
+  height: 100vh;
+  overflow: hidden;
+}
+
+.postLoginSplash {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface);
+  z-index: 200;
+  animation: postLoginSplashFade 450ms cubic-bezier(0.22, 0.9, 0.36, 1) forwards;
+}
+
+.postLoginSplashLogo {
+  width: 220px;
+  height: 220px;
+  object-fit: contain;
+  will-change: opacity;
+}
+
+@keyframes postLoginSplashFade {
+  0% { opacity: 1; }
+  70% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.pageOverlay {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  /* 側邊欄開啟時覆蓋頁面以攔截點擊；保持元素存在以利平滑淡入淡出 */
+  background: rgba(0,0,0,1);
+  opacity: 0;
+  z-index: 50; /* below the sidebar (sidebar z-index is 60) */
+  pointer-events: none;
+  will-change: opacity;
+  transition: opacity 220ms cubic-bezier(0.2, 0.9, 0.2, 1);
+}
+
+.pageOverlayOpen {
+  opacity: 0.35;
+  pointer-events: auto;
+  /* 為了動畫流暢，避免使用 backdrop-filter（在某些裝置會造成效能不穩定） */
+}
+
+.sidebarOpen .topbar {
+  /* 側邊欄採用覆蓋方式，不會位移頂欄 */
+  transform: none;
+  transform-origin: initial;
+  transition: none;
+}
+
+.sidebarOpen .layout {
+  transition: transform 280ms cubic-bezier(0.2, 0.9, 0.2, 1);
+  z-index: 10; /* keep layout below the sidebar */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sidebarOpen .topbar,
+  .sidebarOpen .layout {
+    transition: none;
+  }
+
+  .postLoginSplash {
+    animation: none;
+  }
+}
+
+.workspaceMain {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  padding-top: 72px; /* 為固定頂欄保留高度 (72px) */
+  margin-left: 0; /* 預設無側邊欄偏移；由 .sidebarOpen 控制顯示 */
+  /* 確保主容器不會把滾動傳遞到整頁 */
+  overflow: hidden;
+  transition: margin-left 280ms cubic-bezier(0.2, 0.9, 0.2, 1);
+}
+
+.layout {
+  display: grid;
+  /* 側欄關閉時建議左右欄位比例為 35/65 */
+  grid-template-columns: minmax(320px, 35%) minmax(0, 65%);
+  gap: 24px;
+  width: 100%;
+  /* 在寬螢幕上保留水平留白 */
+  padding: 24px 48px;
+  box-sizing: border-box;
+  max-width: none;
+  margin: 0;
+  align-items: stretch;
+  min-width: 0;
+  /* 將表單與預覽放置於同一高質感表面，視覺統一 */
+  background: linear-gradient(
+    180deg,
+    var(--surface) 0%,
+    color-mix(in srgb, var(--surface), var(--bg) 18%) 100%
+  );
+  border: 1px solid color-mix(in srgb, var(--border) 92%, transparent);
+  box-shadow: var(--shadow-sm);
+}
+
+.progressRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  /* 預覽面板使用 `margin-top: -8px`，此處保留額外空間以對齊 */
+  margin-bottom: 24px;
+  /* 讓完成提示的寬度與預覽面板對齊，外觀一致 */
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.progressRow :global(.progressWrap) {
+  flex: 1 1 auto;
+  width: 100%;
+  margin-bottom: 0; /* 移除進度條底部間距以維持列對齊 */
+}
+
+/* When the sidebar is open, adjust panel proportions relative to the remaining viewport
+   width (100% - 320px) so the form/preview panels scale proportionally and do not overflow. */
+.sidebarOpen .workspaceMain {
+  margin-left: 0; /* keep main in place; sidebar is fixed overlay */
+}
+
+.sidebarOpen .layout {
+  /* Keep layout column proportions unchanged when sidebar opens */
+  grid-template-columns: minmax(320px, 35%) minmax(0, 65%);
+}
+
+/* When showing the Risk Checker, collapse the left tools column and let the preview span center */
+.riskView .layout {
+  grid-template-columns: 1fr;
+  padding: 16px 24px;
+  align-items: stretch;
+}
+
+.riskView .workspace {
+  display: none;
+}
+
+.riskView .document {
+  position: static;
+  max-height: none;
+  overflow: visible;
+  padding: 0;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+}
+
+.riskView .documentPreviewPlain {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  width: 100%;
+  min-height: calc(100vh - 72px);
+  padding-top: 8px; /* reduce gap to navbar */
+  overflow: auto; /* allow long embedded pages (Risk Checker) to scroll within preview area */
+}
+
+.workspace {
+  position: sticky;
+  top: 72px;
+  max-height: calc(100vh - 72px);
+  overflow: auto;
+  height: auto;
+  align-self: start;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  /* keep horizontal padding inside the left panel */
+  padding: 18px 18px 8px 18px;
+  min-width: 0;
+  background: transparent;
+  border-right: none;
+}
+
+/* Ensure workspace and document panels have identical top/bottom endpoints
+   so their visible boxes align horizontally across the page. Use box-sizing
+   and matching min/max heights without changing layout order. */
+.workspace,
+.document {
+  box-sizing: border-box;
+  min-height: calc(100vh - 72px);
+  max-height: calc(100vh - 72px);
+}
+
+.document {
+  /* Preview panel: keep it visible while the page scrolls. */
+  position: sticky;
+  top: 72px; /* align with topbar */
+  max-height: calc(100vh - 72px);
+  overflow: hidden; /* internal scroller handles content */
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  /* match left workspace top padding so first-card tops align visually */
+  padding: 18px 18px 0 18px;
+  box-shadow: none;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 0; /* critical for inner overflow scrolling */
+}
+
+.documentPreview {
+  width: 100%;
+  margin: 0;
+  /* keep minimal inner padding — top padding is provided by .document now */
+  padding: 18px 28px 28px 28px;
+  /* Dark background so the inner white A4 page is highlighted */
+  background: #2b2f36; /* deep gray */
+  border: 1px solid rgba(0,0,0,0.35);
+  box-shadow: 0 10px 30px rgba(11,17,32,0.28);
+  min-width: 0;
+  overflow: auto; /* allow internal vertical scrolling */
+  max-height: 100%;
+  flex: 1 1 auto;
+  min-height: 0;
+  padding-right: 10px; /* keep scrollbar visible */
+  scrollbar-gutter: stable;
+}
+
+/* Plain preview: no framed card, no scroll container — used for full-page embeds like Risk Checker */
+.documentPreviewPlain {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  min-width: 0;
+  overflow: visible !important;
+  max-height: none !important;
+  flex: 1 1 auto;
+  min-height: 0;
+  padding-right: 0;
+}
+
+@media (max-width: 1100px) {
+  .layout {
+    grid-template-columns: 1fr;
+    padding: 16px;
+  }
+
+  .workspaceMain {
+    margin-left: 0;
+  }
+
+  .workspace {
+    position: static;
+    max-height: none;
+    overflow: visible;
+    padding-bottom: 12px;
+    padding-right: 0;
+  }
+
+  .document {
+    padding: 12px;
+    min-height: auto;
+  }
+}
+
+/* Document preview container: increase width and breathing room */
+.documentPreview {
+  /* Let the preview panel fill its grid column while keeping an inner framed A4 */
+  max-width: 100%;
+  /* lift the preview slightly so its top aligns with the first form card */
+  margin: -8px 0 8px 0;
+  padding: 18px 28px 28px 28px; /* keep inner padding; upward offset corrects alignment */
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+@media print {
+  .workspaceRoot,
+  .workspaceMain {
+    overflow: visible;
+    background: #ffffff;
+  }
+}
+
+/* Premium scrollbars (scoped to AnnexBuilderPage)
+   - Uses existing design tokens (no new colors)
+   - Works in WebKit + Firefox */
+.workspace,
+.documentPreview {
+  scrollbar-width: thin;
+  /* Use ActPilot black tone for the scrollbar thumb in Firefox */
+  scrollbar-color: #0b1220 transparent;
+}
+
+.workspace::-webkit-scrollbar,
+.documentPreview::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.workspace::-webkit-scrollbar-track,
+.documentPreview::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.workspace::-webkit-scrollbar-thumb,
+.documentPreview::-webkit-scrollbar-thumb {
+  background-color: #0b1220; /* ActPilot black tone */
+  border-radius: 999px;
+  border: 3px solid transparent;
+  background-clip: padding-box;
+}
+
+.workspace::-webkit-scrollbar-thumb:hover,
+.documentPreview::-webkit-scrollbar-thumb:hover {
+  background-color: #000000;
+}
