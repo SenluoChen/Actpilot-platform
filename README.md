@@ -1,8 +1,6 @@
-ActPilot - AI Act Risk Checker & Annex IV Generator (Frontend & Backend)
+**ActPilot - AI Act Risk Checker & Annex IV Generator**
 
 ActPilot is an **RegTech MVP** designed to help startups and SMEs assess their AI systems under the **EU AI Act** and generate structured compliance documentation (**Annex IV**). The platform focuses on **risk classification**, **document generation**, and **human-in-the-loop AI assistance**, without replacing legal or regulatory decision-making.
-
-A key capability is **AI Prefill**: extracting signals from supporting documents and pre-filling Annex IV fields to accelerate drafting, while keeping humans in control for review and final edits.
 
 The project is built as a full-stack cloud application with a modern React frontend and a serverless AWS backend deployed via infrastructure as code.
 
@@ -10,7 +8,7 @@ The project is built as a full-stack cloud application with a modern React front
 ## Project Goals
 
 - Provide a fast, structured **AI Act risk self-assessment**
-- Generate **Annex IV–style documentation drafts** from structured inputs
+- Generate **Annex IV documentation drafts** from structured inputs and **AI Prefill**
 - Offer a scalable and auditable cloud architecture suitable for B2B SaaS
 
 ---
