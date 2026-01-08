@@ -1,71 +1,145 @@
-# AI Act MVP Backend (AWS CDK + TypeScript)
+ActPilot - AI Act Risk Checker & Annex IV Generator (Frontend & Backend)
 
-兩個受 API Key 保護的端點：
-- `POST /classify`：根據 `useCase` 粗分 AI Act 風險級別，回傳分類與 checklist
-- `POST /statement`：生成「專業聲明」JSON（前端可用來產 PDF）
+ActPilot is an **RegTech MVP** designed to help startups and SMEs assess their AI systems under the **EU AI Act** and generate structured compliance documentation (**Annex IV**). The platform focuses on **risk classification**, **document generation**, and **human-in-the-loop AI assistance**, without replacing legal or regulatory decision-making.
 
-## 需求
-- Node.js 18+
-- 已設定 `aws configure` 的 AWS CLI
-- AWS CDK v2（`npm i -g aws-cdk`）
+A key capability is **AI Prefill**: extracting signals from supporting documents and pre-filling Annex IV fields to accelerate drafting, while keeping humans in control for review and final edits.
 
-## 安裝
-```bash
-npm install
-```
+The project is built as a full-stack cloud application with a modern React frontend and a serverless AWS backend deployed via infrastructure as code.
 
-## 本機測 Lambda（不用上雲）
-```bash
-npm run local
-# 或自動重跑：
-npm run dev:local
-```
-此指令會執行 `scripts/local-run.ts`，用 `events/apigw-post.json` 模擬 API Gateway 事件。
 
-## 部署到 AWS
-首次在此帳號/區域：
-```bash
-npx cdk bootstrap
-```
-之後部署：
-```bash
-npm run deploy
-```
-輸出會包含：
-- `ApiBaseUrl` 例：`https://xxx.execute-api.eu-west-3.amazonaws.com/prod/`
-- `ApiKeyId`：到 AWS Console → API Gateway → API Keys 找到 `ai-act-mvp-key` 顯示 **API key 值**（明文）。
+## Project Goals
 
-## 測試（雲端）
-```bash
-API="https://xxx.execute-api.<region>.amazonaws.com/prod"
-KEY="<你的API_KEY值>"
+- Provide a fast, structured **AI Act risk self-assessment**
+- Generate **Annex IV–style documentation drafts** from structured inputs
+- Offer a scalable and auditable cloud architecture suitable for B2B SaaS
 
-# /classify
-curl -X POST "$API/classify" \
-  -H "x-api-key: $KEY" -H "Content-Type: application/json" \
-  -d '{"company":"ABC Tech","email":"info@abc.com","useCase":"Recrutement","dataSource":"CV + LinkedIn","hasHumanSupervision":true}'
+---
 
-# /statement
-curl -X POST "$API/statement" \
-  -H "x-api-key: $KEY" -H "Content-Type: application/json" \
-  -d '{"company":"ABC Tech","email":"info@abc.com","useCase":"Recrutement","dataSource":"CV + LinkedIn","hasHumanSupervision":true,"classification":"Haut risque","label":"Rouge","explication":"Domaine listé comme haut risque","checklist":["A","B","C"]}'
-```
+## Key Features
 
-## 前端整合提示
-- `.env` 例：
-  ```
-  REACT_APP_API_BASE_URL=https://xxx.execute-api.<region>.amazonaws.com/prod
-  ```
-- 每次 `fetch` 記得加：
-  ```js
-  headers: { "Content-Type": "application/json", "x-api-key": "<你的API_KEY值>" }
-  ```
+- **AI Prefill (document-to-form)** — Automatically extract relevant information from uploaded supporting documents and pre-fill Annex IV fields; users review and finalize the draft.
+- **AI Act risk classification** — Guided questionnaires and classification logic aligned with EU AI Act risk tiers.
+- **Annex IV document generation** — Form-driven mapping to Annex IV sections with LLM-assisted drafting and rewrite.
+- **Export** — PDF and DOCX export of generated drafts.
 
-## 清除資源
-```bash
-npm run destroy
+---
+
+## Repository Structure
+
+```text
+.
+├─ frontend/                  # Vite + React + TypeScript UI
+│  ├─ src/
+│  │  ├─ auth/                # Cognito authentication
+│  │  ├─ annex/               # Annex IV domain logic
+│  │  ├─ riskChecker/         # AI Act risk checker UI
+│  │  ├─ components/          # Shared UI components
+│  │  └─ pages/               # Page-level views
+│  └─ public/
+│
+├─ backend/                   # Serverless backend + infrastructure
+│  ├─ bin/                    # CDK app entry
+│  ├─ lib/                    # CDK stacks (API, storage, frontend hosting)
+│  ├─ lambda/
+│  │  ├─ api/                 # HTTP handlers (thin controllers)
+│  │  ├─ usecases/            # Core business logic (pure TypeScript)
+│  │  └─ infra/               # AWS adapters (DynamoDB, S3, env)
+│  ├─ scripts/                # Local tests and smoke checks
++│  └─ README.md               # Backend-specific documentation
+│
+└─ README.md                  # Project overview (this file)
 ```
 
 ---
 
-> 注意：此專案使用 `NODEJS_20_X` runtime。若你的公司有特定區域/帳號，請在 `bin/app.ts` 設定 `env`。
+## Local Development
+
+### Frontend (local)
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+The frontend runs locally using Vite and connects to either mocked APIs or deployed backend endpoints depending on environment variables.
+
+### Backend (local / build)
+
+```bash
+cd backend
+npm install
+npm run build
+```
+
+---
+
+## Deploy (cloud)
+
+Deploy the backend (CDK):
+
+```bash
+cd backend
+npx cdk bootstrap
+npm run deploy
+```
+
+To build and publish the frontend via the CDK stack:
+
+```bash
+cd backend
+npm run deploy:frontend
+```
+
+What the deploy creates:
+
+- API Gateway + Lambda functions
+- DynamoDB tables
+- S3 buckets (frontend hosting)
+- CloudFront distribution (if enabled)
+- IAM roles and permissions required by the stack
+
+---
+
+## Environment Variables
+
+- Frontend: see `frontend/.env.example` and `frontend/.env.local` (API URL, Cognito IDs, other envs).
+- Backend: see `backend/.env.example`.
+
+Sensitive values (API keys, secrets) must not be committed - use AWS SSM / Secrets Manager for production secrets.
+
+---
+
+## Architecture Notes
+
+- Clear separation of concerns: `lambda/api` (HTTP handlers) → `lambda/usecases` (business logic) → `lambda/infra` (AWS adapters).
+- Business logic is framework-agnostic and testable in `usecases/`.
+- Frontend is a static SPA; optional S3 + CloudFront hosting is supported by CDK.
+
+---
+
+## Documentation
+
+- Backend deployment & infra: `backend/README.md`
+- Frontend setup & env: `frontend/README.md`
+
+---
+
+## Repository Management
+
+- Frontend and backend are self-contained projects within this monorepo.
+- Root `package.json` contains convenience scripts only.
+- Build artifacts and local files are ignored via `.gitignore`.
+
+Optional: split into two GitHub repositories using `git subtree`:
+
+```bash
+git subtree split --prefix frontend -b split/frontend
+git subtree split --prefix backend -b split/backend
+```
+
+---
+
+## Disclaimer
+
+This project provides assistive tooling only. It does not provide legal advice, certification, or automated regulatory decisions. Final responsibility for compliance remains with the user.
