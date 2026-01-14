@@ -1,6 +1,6 @@
 **ActPilot - AI Act Risk Checker & Annex IV Generator**
 
-https://github.com/user-attachments/assets/cf75920d-d74e-4614-92ac-323ff7d82e80
+https://github.com/user-attachments/assets/0349fb5c-65d9-48e1-935a-12b637521a9a
 
 
 ActPilot is an **RegTech MVP** designed to help startups and SMEs assess their AI systems under the **EU AI Act** and generate structured compliance documentation (**Annex IV**). The platform focuses on **risk classification**, **document generation**, and **human-in-the-loop AI assistance**, without replacing legal or regulatory decision-making.
